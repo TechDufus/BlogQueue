@@ -1,0 +1,20 @@
+name: 'Blog Queue Workflow'
+author: 'matthewjdegarmo'
+description: 'Publish blog posts from a queue of posts based on a schedule.'
+
+inputs:
+  queue_path:
+    description: 'Path to the queue directory where pending posts are stored.'
+    required: true
+  destination_path:
+    description: 'Path to the published posts directory for your blog.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - run: >
+        ${{ github.action_path/action.ps1 }}
+        -Path "${{ inputs.queue_path }}"
+        -Destination "${{ inputs.destination_path }}"
+      shell: pwsh
