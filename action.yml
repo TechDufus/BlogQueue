@@ -18,6 +18,6 @@ runs:
   steps:
     - run: >
         ${{ github.action_path }}/action.ps1
-        -Path "${{ inputs.queue_path }}"
+        -Path        "${{ inputs.queue_path }}"
         -Destination "${{ inputs.destination_path }}"
       shell: pwsh
