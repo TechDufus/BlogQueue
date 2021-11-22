@@ -1,6 +1,9 @@
 name: 'Blog Queue Workflow'
 author: 'matthewjdegarmo'
 description: 'Publish blog posts from a queue of posts based on a schedule.'
+branding:
+  icon: archive
+  color: purple
 
 inputs:
   queue_path:
