@@ -1,4 +1,4 @@
-# blogqueue
+# BlogQueue
 Queue up blog posts to release on your own schedule, all hosted in GitHub.
 
 This action is meant to add a post file into your posts directory in your blog repo. In many cases, simply adding the new blog file will trigger CI to redeploy your website with the new post.
