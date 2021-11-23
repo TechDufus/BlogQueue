@@ -37,7 +37,6 @@ Begin {
     
      Function Commit-GitRepo() {
         [CmdletBinding()]
-        [SuppressMessage('PSUseApprovedVerbs', '')]
         Param(
             [Parameter(Mandatory)]
             [System.Object[]] $CommitMessage,
