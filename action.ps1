@@ -23,25 +23,64 @@ Param(
     [System.String]$Path,
     
     [Parameter(Mandatory)]
-    [System.String]$Destination
+    [System.String]$Destination,
+
+    [Parameter(Mandatory)]
+    [System.Object] $CommitterUsername,
+
+    [Parameter(Mandatory)]
+    [System.Object] $CommitterEmail
 )
 
-Begin {}
+Begin {
+     #Region Commit-GitRepo
+    
+     Function Commit-GitRepo() {
+        [CmdletBinding()]
+        [SuppressMessage('PSUseApprovedVerbs', '')]
+        Param(
+            [Parameter(Mandatory)]
+            [System.Object[]] $CommitMessage,
+        
+            [Parameter(Mandatory)]
+            [System.Object[]] $CommitterUsername,
+        
+            [Parameter(Mandatory)]
+            [System.Object[]] $CommitterEmail
+        )
+    
+        Process {
+            git config --local user.name "$CommitterUsername"
+            git config --local user.email "$CommitterEmail"
+    
+            git add -A
+            git commit -m "$CommitMessage"
+            git push
+        }
+    }
+    #EndRegion Commit-GitRepo
+}
 
 Process {
     Try {
         # Get 1 file from the queue
         $QueueFile = Get-ChildItem -Path $Path | Select-Object -First 1
 
-        # Move that file to the posts directory
-        Move-Item -Path $QueueFile.FullName -Destination $Destination -Force
-
-        # Git add commit push that file to github repo to trigger new site deploy
-        Push-Location $Destination
-        git add -A
-        git commit -m "Adding new post from queue: $($QueueFile.Name)"
-        git push
-        Pop-Location
+        If ($QueueFile.Count -gt 0) {
+            # Move that file to the posts directory
+            Move-Item -Path $QueueFile.FullName -Destination $Destination -Force
+    
+            $commitGitRepoSplat = @{
+                CommitMessage     = "Adding new post from queue: $($QueueFile.Name)"
+                CommitterUsername = $CommitterUsername
+                CommitterEmail    = $CommitterEmail
+            }
+            
+            # Git add commit push that file to github repo to trigger new site deploy
+            Push-Location $Destination
+            Commit-GitRepo @commitGitRepoSplat
+            Pop-Location
+        }
     } Catch {
         Throw $_
     }

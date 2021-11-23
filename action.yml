@@ -12,10 +12,6 @@ inputs:
   destination_path:
     description: 'Path to the published posts directory for your blog.'
     required: true
-  commit_message:
-    description: "Commit message used while committing to the repo"
-    default: "Published blog post from queue."
-    required: false
   committer_username:
     description: "Username used while committing to the repo"
     default: "BLogQueue-post-bot"
@@ -32,7 +28,6 @@ runs:
         ${{ github.action_path }}/action.ps1
         -Path        "${{ inputs.queue_path }}"
         -Destination "${{ inputs.destination_path }}"
-        -CommitMessage     "${{ inputs.commit_message }}"
         -CommitterUsername "${{ inputs.committer_username }}"
         -CommitterEmail    "${{ inputs.committer_email }}"
       shell: pwsh
