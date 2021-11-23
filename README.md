@@ -3,14 +3,14 @@ Queue up blog posts to release on your own schedule, all hosted in GitHub.
 
 This action is meant to add a post file into your posts directory in your blog repo. In many cases, simply adding the new blog file will trigger CI to redeploy your website with the new post.
 
-In your repository workflow file, you provide the path to your blog queue directory (where the pending blog files are stored), and the directory your blog uses for live posts. Here's an example workflow that will run on an hourly schedule.
+In your repository workflow file, you provide the path to your blog queue directory (where the pending blog files are stored), and the directory your blog uses for live posts. Here's an example workflow that will run on a weekly schedule.
 
 ```yaml
 name: Blog Queue Workflow
-#Run every hour.
+#Run every Monday at 10:00AM.
 on:
   schedule:
-  - cron: '0 * * * *'
+  - cron: '0 10 * * 1'
   workflow_dispatch:
 
 jobs:
